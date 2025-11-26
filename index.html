@@ -766,45 +766,11 @@
                 const datagrama_formateado = formatear_datagrama(datagrama_hex);
                 
                 let resultadoHTML = `
-                    <h2>Encabezado IP generado</h2>
-                    <pre>
-        Versión: ${version}
-        IHL: ${ihl} (${ihl*4} bytes)
-        Tipo de servicio: ${tos} (0x${tos.toString(16).padStart(2, '0').toUpperCase()})
-        Longitud total: ${total_length} bytes
-        Identificación: ${ident} (0x${ident.toString(16).padStart(4, '0').toUpperCase()})
-        Flags: ${flags} (bin: ${flags.toString(2).padStart(3, '0')})
-        Desplazamiento: ${frag_offset}
-        TTL: ${ttl}
-        Protocolo: ${protocol}
-        Checksum: ${checksum} (0x${checksum.toString(16).padStart(4, '0').toUpperCase()})
-        IP Origen: ${src_ip}
-        IP Destino: ${dst_ip}
-        Opciones: ${options}
-        Longitud datos: ${data.length} bytes
-                    </pre>
                     
                     <h2>Datagrama IPv4 completo (Hexadecimal)</h2>
                     <pre>${datagrama_formateado}</pre>
                     
-                    <h2>Desglose del encabezado</h2>
-                    <pre>
-        Bytes 0-1:   Versión(4) + IHL(${ihl}) + TOS = ${datagrama_hex.substr(0, 4)}
-        Bytes 2-3:   Longitud Total = ${datagrama_hex.substr(4, 4)} (${total_length} bytes)
-        Bytes 4-5:   Identificación = ${datagrama_hex.substr(8, 4)}
-        Bytes 6-7:   Flags + Desplazamiento = ${datagrama_hex.substr(12, 4)}
-        Bytes 8-9:   TTL + Protocolo = ${datagrama_hex.substr(16, 4)}
-        Bytes 10-11: Checksum = ${datagrama_hex.substr(20, 4)}
-        Bytes 12-15: IP Origen = ${datagrama_hex.substr(24, 8)} (${src_ip})
-        Bytes 16-19: IP Destino = ${datagrama_hex.substr(32, 8)} (${dst_ip})
-                `;
-                
-                if (options && options !== '') {
-                    resultadoHTML += `Bytes 20-${19+((ihl*4)-20)}: Opciones = ${options}\n`;
-                }
-                
-                resultadoHTML += `Bytes ${ihl*4*2}-final: Datos = ${datos_a_hex(data)}\n`;
-                resultadoHTML += `</pre>`;
+                   
                 
                 resultadoDiv.innerHTML = resultadoHTML;
             } else {
@@ -1144,4 +1110,5 @@
         });
     </script>
 </body>
+
 </html>
