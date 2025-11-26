@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Constructor de Encabezado IPv4</title>
+    <style>
+        :root {
+            --morado: #6a0dad;
+            --morado-claro: #8a2be2;
+            --rojo: #d32f2f;
+            --rojo-claro: #f44336;
+            --negro: #212121;
+            --gris-oscuro: #424242;
+            --gris: #757575;
+            --gris-claro: #e0e0e0;
+        }
+        
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #f9f5ff, #f0f0f0);
+            margin: 0;
+            padding: 20px;
+            color: var(--negro);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--morado);
+            margin-bottom: 30px;
+            font-size: 32px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        form {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--morado);
+        }
+
+        .field {
+            margin-bottom: 18px;
+            padding: 12px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border-left: 3px solid var(--rojo);
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: var(--morado);
+        }
+
+        input[type=text],
+        input[type=number],
+        select,
+        textarea {
+            width: 100%;
+            max-width: 350px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--gris-claro);
+            transition: 0.2s all;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--morado);
+            box-shadow: 0 0 4px rgba(106, 13, 173, 0.3);
+        }
+
+        textarea {
+            max-width: 100%;
+            min-height: 80px;
+        }
+
+        .rand {
+            background: var(--morado);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-left: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .rand:hover {
+            background: var(--morado-claro);
+            transform: translateY(-1px);
+        }
+
+        button[type=submit] {
+            background: var(--rojo);
+            border: none;
+            padding: 14px 28px;
+            color: white;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            transition: 0.25s;
+            font-weight: bold;
+        }
+
+        button[type=submit]:hover {
+            background: var(--rojo-claro);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        hr {
+            max-width: 900px;
+            margin: 40px auto;
+            border: none;
+            border-top: 2px dashed var(--gris);
+        }
+
+        /* RESULTADOS */
+        .resultado-box {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--morado);
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            padding: 15px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-size: 14px;
+            border-left: 3px solid var(--rojo);
+        }
+
+        h2 {
+            color: var(--morado);
+            border-left: 5px solid var(--rojo);
+            padding-left: 10px;
+            margin-top: 25px;
+        }
+
+        .info {
+            font-size: 12px;
+            color: var(--gris);
+        }
+
+        .disabled {
+            background: var(--gris-claro) !important;
+            color: var(--gris) !important;
+        }
+
+        .portada {
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 3px solid var(--morado);
+        }
+
+        .portada h1 {
+            color: var(--morado);
+            margin-bottom: 10px;
+        }
+
+        .portada h2 {
+            color: var(--rojo);
+            margin-bottom: 30px;
+            border: none;
+            padding: 0;
+        }
+
+        .carrera, .materia, .proyecto {
+            margin: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--negro);
+        }
+
+        .presenta, .docente {
+            margin-top: 20px;
+            color: var(--gris-oscuro);
+        }
+
+        .nombres {
+            font-weight: bold;
+            margin: 10px 0 20px 0;
+            font-size: 20px;
+            color: var(--rojo);
+        }
+
+        .fecha {
+            margin-top: 25px;
+            color: var(--gris-oscuro);
+            font-style: italic;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-row input, .form-row select {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            form, .portada, .resultado-box {
+                width: 95%;
+                padding: 15px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .form-row input, .form-row select {
+                width: 100%;
+            }
+            
+            .rand {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PORTADA -->
+    <div class="portada">
+        <div class="institucion">
+            <h1>Universidad Autónoma del Estado de México</h1>
+            <h2>Centro Universitario UAEM Zumpango</h2>
+        </div>
+        
+        <div class="carrera">Ingeniería en Computación</div>
+        <div class="materia">Arquitectura de Redes</div>
+        <div class="proyecto">Proyecto: Encabezado del datagrama IPv4</div>
+        
+        <div class="presenta">Presenta:</div>
+        <div class="nombres">Luis Gabriel De Jesus Villalpando</div>
+        
+        <div class="docente">Docente:</div>
+        <div class="nombres">Carlos Alberto Rojas Hernández</div>
+    </div>
+
+    <h1>Generador de Encabezado IPv4</h1>
+
+    <form id="ipv4Form">
+        <div class="field">
+            <label>Versión</label>
+            <input type="number" name="version" value="4" readonly>
+        </div>
+
+        <div class="field">
+            <label>Longitud del encabezado (IHL)</label>
+            <select name="ihl" id="ihl">
+                <option value="5" selected>5 (20 bytes)</option>
+                <option value="6">6 (24 bytes)</option>
+                <option value="7">7 (28 bytes)</option>
+                <option value="8">8 (32 bytes)</option>
+                <option value="9">9 (36 bytes)</option>
+                <option value="10">10 (40 bytes)</option>
+                <option value="11">11 (44 bytes)</option>
+                <option value="12">12 (48 bytes)</option>
+                <option value="13">13 (52 bytes)</option>
+                <option value="14">14 (56 bytes)</option>
+                <option value="15">15 (60 bytes)</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Tipo de servicio (TOS)</label>
+            <select name="tos_preset" id="tos_preset" class="tos-preset">
+                <option value="custom">Personalizado</option>
+                <option value="00000000">Normal (0x00)</option>
+                <option value="00000001">Minimize Cost (0x01)</option>
+                <option value="00000010">Maximize Reliability (0x02)</option>
+                <option value="00000100">Maximize Throughput (0x04)</option>
+                <option value="00001000">Minimize Delay (0x08)</option>
+                <option value="00001111">Maximize Security (0x0F)</option>
+            </select>
+            
+            <div id="tos_custom" style="display:none; margin-top:8px;">
+                <div class="form-row">
+                    <input type="text" id="tos" name="tos" placeholder="Valor personalizado" maxlength="2">
+                    <select id="tos_base" name="tos_base">
+                        <option value="hex">Hex</option>
+                        <option value="dec">Dec</option>
+                        <option value="bin">Bin</option>
+                    </select>
+                    <button type="button" class="rand" onclick="genRandomValue('tos',8,'tos_base')">Aleatorio</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Longitud total del datagrama</label>
+            <div class="info" id="total_length_info">Calculado automáticamente</div>
+            <input type="hidden" name="total_length" value="0">
+        </div>
+
+        <div class="field">
+            <label>Identificación (16 bits)</label>
+            <div class="form-row">
+                <input type="text" id="ident" name="ident" placeholder="" maxlength="4">
+                <select id="ident_base" name="ident_base">
+                    <option value="hex">Hex</option>
+                    <option value="dec">Dec</option>
+                    <option value="bin">Bin</option>
+                </select>
+                <button type="button" class="rand" onclick="genRandomValue('ident',16,'ident_base')">Aleatorio</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Flags (3 bits)</label>
+            <div class="form-row">
+                <input type="text" id="flags" name="flags" value="" placeholder="" maxlength="3">
+                <select id="flags_base" name="flags_base">
+                    <option value="bin">Bin</option>
+                    <option value="dec">Dec</option>
+                    <option value="hex">Hex</option>
+                </select>
+                <button type="button" class="rand" onclick="genRandomValue('flags',3,'flags_base')">Aleatorio</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Desplazamiento del fragmento (13 bits)</label>
+            <div class="form-row">
+                <input type="text" id="frag_offset" name="frag_offset" value="" placeholder="" maxlength="13">
+                <select id="frag_offset_base" name="frag_offset_base">
+                    <option value="bin">Bin</option>
+                    <option value="dec">Dec</option>
+                    <option value="hex">Hex</option>
+                </select>
+                <button type="button" class="rand" onclick="genRandomValue('frag_offset',13,'frag_offset_base')">Aleatorio</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Tiempo de vida (TTL, 8 bits)</label>
+            <div class="form-row">
+                <input type="text" id="ttl" name="ttl" value="" placeholder="" maxlength="3">
+                <select id="ttl_base" name="ttl_base">
+                    <option value="dec">Dec</option>
+                    <option value="hex">Hex</option>
+                    <option value="bin">Bin</option>
+                </select>
+                <button type="button" class="rand" onclick="genRandomValue('ttl',8,'ttl_base')">Aleatorio</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Protocolo</label>
+            <select name="protocol" id="protocol">
+                <option value="1">ICMP (1)</option>
+                <option value="2">IGMP (2)</option>
+                <option value="6" selected>TCP (6)</option>
+                <option value="17">UDP (17)</option>
+                <option value="41">IPv6 (41)</option>
+                <option value="89">OSPF (89)</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Checksum (16 bits)</label>
+            <div class="form-row">
+                <input type="text" id="checksum" name="checksum" value="" placeholder="" maxlength="4">
+                <select id="checksum_base" name="checksum_base">
+                    <option value="hex">Hex</option>
+                    <option value="dec">Dec</option>
+                    <option value="bin">Bin</option>
+                </select>
+                <button type="button" class="rand" onclick="genRandomValue('checksum',16,'checksum_base')">Aleatorio</button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Dirección IP origen</label>
+            <input type="text" id="src_ip" name="src_ip" placeholder="" required>
+        </div>
+
+        <div class="field">
+            <label>Dirección IP destino</label>
+            <input type="text" id="dst_ip" name="dst_ip" placeholder="" required>
+        </div>
+
+        <div class="field">
+            <label>Opciones (solo hexadecimal)</label>
+            <input type="text" id="options" name="options" placeholder="">
+            <div class="info" id="options_limit"></div>
+        </div>
+
+        <div class="field">
+            <label>Datos (mensaje)</label>
+            <textarea name="data" id="data" rows="4" cols="50" placeholder=""></textarea>
+            <div class="info">Longitud actual: <span id="data_length">0</span> bytes</div>
+        </div>
+
+        <button type="submit">Generar datagrama IPv4</button>
+    </form>
+
+    <hr>
+
+    <div class="resultado-box" id="resultado">
+        <!-- Los resultados se mostrarán aquí después del procesamiento -->
+    </div>
+
+    <script>
+        // Protocolos comunes
+        const protocolos = {
+            1: "ICMP (1)",
+            2: "IGMP (2)",
+            6: "TCP (6)",
+            17: "UDP (17)",
+            41: "IPv6 (41)",
+            89: "OSPF (89)"
+        };
+
+        // Valores predefinidos para TOS
+        const valores_tos = {
+            "00000000": "Normal (0x00)",
+            "00000001": "Minimize Cost (0x01)",
+            "00000010": "Maximize Reliability (0x02)",
+            "00000100": "Maximize Throughput (0x04)",
+            "00001000": "Minimize Delay (0x08)",
+            "00001111": "Maximize Security (0x0F)"
+        };
+
+        // Funciones de conversión y validación
+        function parse_to_int(value, base) {
+            value = value.trim();
+            if (value === '') return 0;
+
+            switch (base) {
+                case 'bin': return parseInt(value, 2);
+                case 'hex': return parseInt(value, 16);
+                case 'dec': return parseInt(value, 10);
+                default:    return parseInt(value, 10);
+            }
+        }
+
+        function validate_ip(ip) {
+            if (ip === '') return false;
+            const parts = ip.split('.');
+            if (parts.length !== 4) return false;
+            for (let part of parts) {
+                const num = parseInt(part, 10);
+                if (isNaN(num) || num < 0 || num > 255 || num.toString() !== part) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function calcular_longitud_total(ihl, data) {
+            const longitud_encabezado = ihl * 4; // en bytes
+            const longitud_datos = data.length; // en bytes (1 carácter = 1 byte)
+            return longitud_encabezado + longitud_datos;
+        }
+
+        function datos_a_hex(data) {
+            let hex = '';
+            for (let i = 0; i < data.length; i++) {
+                hex += data.charCodeAt(i).toString(16).padStart(2, '0');
+            }
+            return hex.toUpperCase();
+        }
+
+        function ip_a_hex(ip) {
+            const parts = ip.split('.');
+            let hex = '';
+            for (let part of parts) {
+                hex += parseInt(part).toString(16).padStart(2, '0');
+            }
+            return hex.toUpperCase();
+        }
+
+        function generar_datagrama_completo(campos, data) {
+            let datagrama = "";
+            
+            // Versión (4 bits) + IHL (4 bits)
+            const byte1 = ((campos.version << 4) | campos.ihl) & 0xFF;
+            datagrama += byte1.toString(16).padStart(2, '0');
+            
+            // TOS (8 bits)
+            datagrama += campos.tos.toString(16).padStart(2, '0');
+            
+            // Longitud Total (16 bits)
+            datagrama += campos.total_length.toString(16).padStart(4, '0');
+            
+            // Identificación (16 bits)
+            datagrama += campos.ident.toString(16).padStart(4, '0');
+            
+            // Flags (3 bits) + Fragment Offset (13 bits)
+            const flags_fragment = ((campos.flags << 13) | campos.frag_offset) & 0xFFFF;
+            datagrama += flags_fragment.toString(16).padStart(4, '0');
+            
+            // TTL (8 bits)
+            datagrama += campos.ttl.toString(16).padStart(2, '0');
+            
+            // Protocolo (8 bits)
+            datagrama += campos.protocol.toString(16).padStart(2, '0');
+            
+            // Checksum (16 bits) - temporalmente 0
+            datagrama += campos.checksum.toString(16).padStart(4, '0');
+            
+            // IP Origen (32 bits)
+            datagrama += ip_a_hex(campos.src_ip);
+            
+            // IP Destino (32 bits)
+            datagrama += ip_a_hex(campos.dst_ip);
+            
+            // Opciones (si las hay)
+            if (campos.options && campos.options !== '') {
+                let opciones_hex = campos.options.replace(/ /g, '');
+                // Asegurar que las opciones tengan longitud par
+                if (opciones_hex.length % 2 !== 0) {
+                    opciones_hex += '0';
+                }
+                datagrama += opciones_hex;
+            }
+            
+            // Datos
+            datagrama += datos_a_hex(data);
+            
+            return datagrama.toUpperCase();
+        }
+
+        function formatear_datagrama(hex_string) {
+            let result = "";
+            const length = hex_string.length;
+            for (let i = 0; i < length; i += 8) {
+                const line = hex_string.substr(i, 8);
+                let formatted_line = "";
+                for (let j = 0; j < line.length; j += 2) {
+                    formatted_line += line.substr(j, 2) + " ";
+                }
+                result += formatted_line + "\n";
+            }
+            return result;
+        }
+
+        // Función para validar TTL (8 bits)
+        function validateTTL(value, base) {
+            if (value === '') return true;
+            const ttlValue = parse_to_int(value, base);
+            if (ttlValue > 255) {
+                return false;
+            }
+            return true;
+        }
+
+        // Función para validar opciones según IHL
+        function validateOptions(options, ihl) {
+            const max_options_bytes = (ihl * 4) - 20;
+            const max_options_chars = max_options_bytes * 2;
+            
+            if (options && options !== '' && options.length > max_options_chars) {
+                return false;
+            }
+            return true;
+        }
+
+        // Función para aplicar restricción en tiempo real a TTL
+        function applyTTLRestrictions() {
+            const ttlInput = document.getElementById('ttl');
+            const ttlBaseSelect = document.getElementById('ttl_base');
+            
+            function updateTTLValidation() {
+                const base = ttlBaseSelect.value;
+                const currentValue = ttlInput.value;
+                
+                if (!validateTTL(currentValue, base)) {
+                    // Si excede el máximo, truncar al valor máximo permitido
+                    switch(base) {
+                        case 'dec':
+                            ttlInput.value = '255';
+                            break;
+                        case 'hex':
+                            ttlInput.value = 'FF';
+                            break;
+                        case 'bin':
+                            ttlInput.value = '11111111';
+                            break;
+                    }
+                }
+            }
+            
+            ttlInput.addEventListener('input', updateTTLValidation);
+            ttlBaseSelect.addEventListener('change', updateTTLValidation);
+        }
+
+        // Función para aplicar restricción en tiempo real a opciones
+        function applyOptionsRestrictions() {
+            const optionsInput = document.getElementById('options');
+            
+            optionsInput.addEventListener('input', function() {
+                const ihl = parseInt(document.getElementById('ihl').value);
+                const max_options_bytes = (ihl * 4) - 20;
+                const max_options_chars = max_options_bytes * 2;
+                
+                let currentValue = this.value.toUpperCase().replace(/[^0-9A-F]/g, "");
+                
+                // Truncar si excede el límite
+                if (currentValue.length > max_options_chars) {
+                    currentValue = currentValue.substring(0, max_options_chars);
+                }
+                
+                this.value = currentValue;
+                
+                // Actualizar información del límite en tiempo real
+                const optionsLimit = document.getElementById('options_limit');
+                if (optionsLimit && ihl > 5) {
+                    const usedChars = currentValue.length;
+                    const remainingChars = max_options_chars - usedChars;
+                    const usedBytes = Math.ceil(usedChars / 2);
+                    
+                    if (usedChars > max_options_chars) {
+                        optionsLimit.innerHTML = `<span style="color: #d32f2f; font-weight: bold;">
+                            ¡EXCEDIDO! Límite: ${max_options_chars} caracteres (${max_options_bytes} bytes)
+                        </span>`;
+                    } else {
+                        optionsLimit.innerHTML = `<span class="info">
+                            Usado: ${usedChars} caracteres hex (${usedBytes} bytes) | 
+                            Restantes: ${remainingChars} caracteres | 
+                            Límite: ${max_options_chars} caracteres
+                        </span>`;
+                    }
+                }
+            });
+        }
+
+        function procesarFormulario(event) {
+            event.preventDefault();
+            
+            const resultadoDiv = document.getElementById('resultado');
+            let errores = [];
+
+            // Obtener valores del formulario
+            const version = 4;
+            const ihl = parseInt(document.getElementById('ihl').value);
+            
+            // TOS - puede venir como valor predefinido o personalizado
+            const tosPreset = document.getElementById('tos_preset').value;
+            const tosInput = document.getElementById('tos').value;
+            const tosBase = document.getElementById('tos_base').value;
+            
+            let tos;
+            if (tosPreset !== 'custom') {
+                tos = parse_to_int(tosPreset, 'bin');
+            } else {
+                tos = parse_to_int(tosInput, tosBase);
+            }
+            
+            // Identificación
+            const ident = parse_to_int(document.getElementById('ident').value, document.getElementById('ident_base').value);
+            if (ident > 65535) {
+                errores.push("Identificación excede 16 bits (máximo 65535)");
+            }
+            
+            // Flags
+            const flags = parse_to_int(document.getElementById('flags').value, document.getElementById('flags_base').value);
+            if (flags > 7) {
+                errores.push("Flags excede 3 bits (máximo 7)");
+            }
+            
+            // Fragment Offset
+            const frag_offset = parse_to_int(document.getElementById('frag_offset').value, document.getElementById('frag_offset_base').value);
+            if (frag_offset > 8191) {
+                errores.push("Desplazamiento del fragmento excede 13 bits (máximo 8191)");
+            }
+            
+            // TTL - CON VALIDACIÓN MEJORADA
+            const ttlInput = document.getElementById('ttl').value;
+            const ttlBase = document.getElementById('ttl_base').value;
+            const ttl = parse_to_int(ttlInput, ttlBase);
+            if (!validateTTL(ttlInput, ttlBase)) {
+                errores.push("TTL excede 8 bits (máximo 255)");
+            }
+            
+            // Protocolo
+            const protocol = parseInt(document.getElementById('protocol').value);
+            
+            // Checksum
+            const checksum = parse_to_int(document.getElementById('checksum').value, document.getElementById('checksum_base').value);
+            if (checksum > 65535) {
+                errores.push("Checksum excede 16 bits (máximo 65535)");
+            }
+            
+            // IPs
+            const src_ip = document.getElementById('src_ip').value;
+            const dst_ip = document.getElementById('dst_ip').value;
+            if (!validate_ip(src_ip)) {
+                errores.push("Dirección IP origen no válida");
+            }
+            if (!validate_ip(dst_ip)) {
+                errores.push("Dirección IP destino no válida");
+            }
+            
+            // Opciones - CON VALIDACIÓN MEJORADA
+            const options = document.getElementById('options').value.toUpperCase().replace(/[^0-9A-F]/g, "");
+            if (!validateOptions(options, ihl)) {
+                const max_options_bytes = (ihl * 4) - 20;
+                errores.push(`Opciones exceden el espacio disponible (${max_options_bytes} bytes máximo para IHL=${ihl})`);
+            }
+            
+            // Datos
+            const data = document.getElementById('data').value;
+            
+            // Calcular longitud total automáticamente
+            const total_length = calcular_longitud_total(ihl, data);
+            
+            // Si no hay errores, generar el datagrama
+            if (errores.length === 0) {
+                const campos = {
+                    version: version,
+                    ihl: ihl,
+                    tos: tos,
+                    total_length: total_length,
+                    ident: ident,
+                    flags: flags,
+                    frag_offset: frag_offset,
+                    ttl: ttl,
+                    protocol: protocol,
+                    checksum: checksum,
+                    src_ip: src_ip,
+                    dst_ip: dst_ip,
+                    options: options
+                };
+                
+                const datagrama_hex = generar_datagrama_completo(campos, data);
+                const datagrama_formateado = formatear_datagrama(datagrama_hex);
+                
+                let resultadoHTML = `
+                    <h2>Encabezado IP generado</h2>
+                    <pre>
+        Versión: ${version}
+        IHL: ${ihl} (${ihl*4} bytes)
+        Tipo de servicio: ${tos} (0x${tos.toString(16).padStart(2, '0').toUpperCase()})
+        Longitud total: ${total_length} bytes
+        Identificación: ${ident} (0x${ident.toString(16).padStart(4, '0').toUpperCase()})
+        Flags: ${flags} (bin: ${flags.toString(2).padStart(3, '0')})
+        Desplazamiento: ${frag_offset}
+        TTL: ${ttl}
+        Protocolo: ${protocol}
+        Checksum: ${checksum} (0x${checksum.toString(16).padStart(4, '0').toUpperCase()})
+        IP Origen: ${src_ip}
+        IP Destino: ${dst_ip}
+        Opciones: ${options}
+        Longitud datos: ${data.length} bytes
+                    </pre>
+                    
+                    <h2>Datagrama IPv4 completo (Hexadecimal)</h2>
+                    <pre>${datagrama_formateado}</pre>
+                    
+                    <h2>Desglose del encabezado</h2>
+                    <pre>
+        Bytes 0-1:   Versión(4) + IHL(${ihl}) + TOS = ${datagrama_hex.substr(0, 4)}
+        Bytes 2-3:   Longitud Total = ${datagrama_hex.substr(4, 4)} (${total_length} bytes)
+        Bytes 4-5:   Identificación = ${datagrama_hex.substr(8, 4)}
+        Bytes 6-7:   Flags + Desplazamiento = ${datagrama_hex.substr(12, 4)}
+        Bytes 8-9:   TTL + Protocolo = ${datagrama_hex.substr(16, 4)}
+        Bytes 10-11: Checksum = ${datagrama_hex.substr(20, 4)}
+        Bytes 12-15: IP Origen = ${datagrama_hex.substr(24, 8)} (${src_ip})
+        Bytes 16-19: IP Destino = ${datagrama_hex.substr(32, 8)} (${dst_ip})
+                `;
+                
+                if (options && options !== '') {
+                    resultadoHTML += `Bytes 20-${19+((ihl*4)-20)}: Opciones = ${options}\n`;
+                }
+                
+                resultadoHTML += `Bytes ${ihl*4*2}-final: Datos = ${datos_a_hex(data)}\n`;
+                resultadoHTML += `</pre>`;
+                
+                resultadoDiv.innerHTML = resultadoHTML;
+            } else {
+                let erroresHTML = "<div style='color: #d32f2f;'><h3>Errores de validación:</h3><ul>";
+                for (let error of errores) {
+                    erroresHTML += `<li>${error}</li>`;
+                }
+                erroresHTML += "</ul></div>";
+                resultadoDiv.innerHTML = erroresHTML;
+            }
+        }
+
+        // Función específica para cada campo según su base
+        function applyFilter(inputId, base) {
+            const input = document.getElementById(inputId);
+            
+            input.addEventListener("input", function() {
+                let v = this.value.toUpperCase();
+                
+                switch(base) {
+                    case 'bin':
+                        // Solo permite 0 y 1
+                        v = v.replace(/[^01]/g, "");
+                        break;
+                    case 'dec':
+                        // Solo permite números 0-9
+                        v = v.replace(/[^0-9]/g, "");
+                        break;
+                    case 'hex':
+                        // Solo permite 0-9 y A-F
+                        v = v.replace(/[^0-9A-F]/g, "");
+                        break;
+                }
+                
+                this.value = v;
+            });
+        }
+
+        // Función para cambiar el filtro cuando se cambia la base
+        function changeBaseFilter(inputId, baseSelectId, maxBits) {
+            const baseSelect = document.getElementById(baseSelectId);
+            const input = document.getElementById(inputId);
+            
+            // Remover event listeners anteriores
+            const newInput = input.cloneNode(true);
+            input.parentNode.replaceChild(newInput, input);
+            
+            // Aplicar nuevo filtro
+            applyFilter(inputId, baseSelect.value);
+            
+            // Actualizar maxLength según la base y bits
+            updateMaxLength(inputId, baseSelect.value, maxBits);
+            
+            // Forzar la validación del valor actual
+            let event = new Event('input');
+            newInput.dispatchEvent(event);
+        }
+
+        // Actualizar longitud máxima según base y bits
+        function updateMaxLength(inputId, base, maxBits) {
+            const input = document.getElementById(inputId);
+            let maxLength;
+            
+            switch(base) {
+                case 'bin':
+                    maxLength = maxBits; // 1 carácter por bit
+                    break;
+                case 'dec':
+                    // Para decimal, calcular dígitos máximos
+                    maxLength = Math.pow(2, maxBits).toString().length;
+                    break;
+                case 'hex':
+                    maxLength = Math.ceil(maxBits / 4); // 4 bits por carácter hex
+                    break;
+            }
+            
+            input.maxLength = maxLength;
+        }
+
+        function filterIP(id) {
+            const input = document.getElementById(id);
+            
+            input.addEventListener("input", function() {
+                let v = this.value;
+                
+                // Solo permite números y puntos
+                v = v.replace(/[^0-9.]/g, "");
+                
+                // Limitar a 3 números consecutivos
+                v = v.replace(/(\d{3})\d+/g, '$1');
+                
+                // Limitar a 3 dígitos per octeto
+                let parts = v.split('.');
+                parts = parts.map(part => part.length > 3 ? part.substring(0, 3) : part);
+                
+                // Limitar a 4 octetos máximo
+                if (parts.length > 4) {
+                    parts = parts.slice(0, 4);
+                }
+                
+                // Validar cada octeto individualmente
+                parts = parts.map(part => {
+                    if (part === '') return part;
+                    let num = parseInt(part);
+                    if (num > 255) return '255';
+                    return part;
+                });
+                
+                this.value = parts.join('.');
+            });
+            
+            // Validación adicional al perder el foco - CORREGIDO
+            input.addEventListener("blur", function() {
+                let v = this.value.trim();
+                
+                // Si está vacío, no hacer nada
+                if (v === '') return;
+                
+                let parts = v.split('.');
+                let validParts = [];
+                
+                // Solo validar los octetos que existen
+                for (let i = 0; i < Math.min(parts.length, 4); i++) {
+                    if (parts[i] !== '' && !isNaN(parts[i])) {
+                        let num = parseInt(parts[i]);
+                        if (num >= 0 && num <= 255) {
+                            validParts.push(num.toString());
+                        } else if (num > 255) {
+                            validParts.push('255');
+                        } else {
+                            validParts.push('0');
+                        }
+                    } else {
+                        // Si un octeto está vacío, mantenerlo vacío
+                        validParts.push('');
+                    }
+                }
+                
+                // Solo actualizar si hay correcciones necesarias
+                let newValue = validParts.join('.');
+                if (newValue !== v && newValue !== '...' && newValue !== '') {
+                    this.value = newValue;
+                }
+            });
+        }
+
+        // FILTRO ESPECÍFICO PARA OPCIONES (SOLO HEXADECIMAL)
+        function filterOptions() {
+            const optionsInput = document.getElementById("options");
+            
+            optionsInput.addEventListener("input", function() {
+                let v = this.value.toUpperCase();
+                // Solo permite 0-9 y A-F
+                v = v.replace(/[^0-9A-F]/g, "");
+                this.value = v;
+            });
+        }
+
+        function genRandomValue(id, bits, baseSelectId) {
+            let max = Math.pow(2, bits) - 1;
+            let val = Math.floor(Math.random() * max);
+
+            let base = document.getElementById(baseSelectId).value;
+            let out = "";
+
+            if (base === "hex") {
+                out = val.toString(16).toUpperCase();
+                // Para campos de 16 bits, asegurar 4 caracteres hex
+                if (bits === 16) {
+                    out = out.padStart(4, '0');
+                }
+                // Para campos de 8 bits, asegurar 2 caracteres hex
+                if (bits === 8) {
+                    out = out.padStart(2, '0');
+                }
+                // Para campos de 3 bits, asegurar 1 carácter hex
+                if (bits === 3) {
+                    out = out.padStart(1, '0');
+                }
+            }
+            if (base === "bin") {
+                out = val.toString(2).padStart(bits, '0');
+            }
+            if (base === "dec") {
+                out = val.toString(10);
+            }
+
+            document.getElementById(id).value = out;
+        }
+
+        function updateOptionsLimit() {
+            const ihl = parseInt(document.getElementById("ihl").value);
+            let extraBytes = (ihl * 4) - 20;
+            let maxChars = extraBytes * 2;
+            
+            const optionsInput = document.getElementById("options");
+            const optionsLimit = document.getElementById("options_limit");
+            
+            if (ihl > 5) {
+                // HABILITAR campo opciones si IHL > 5
+                optionsInput.disabled = false;
+                optionsInput.maxLength = maxChars;
+                optionsInput.placeholder = `Máximo ${maxChars} caracteres hex`;
+                optionsInput.classList.remove('disabled');
+                
+                // Validar y ajustar el valor actual si es necesario
+                let currentValue = optionsInput.value.toUpperCase().replace(/[^0-9A-F]/g, "");
+                if (currentValue.length > maxChars) {
+                    currentValue = currentValue.substring(0, maxChars);
+                    optionsInput.value = currentValue;
+                }
+                
+                if (optionsLimit) {
+                    const usedChars = currentValue.length;
+                    const remainingChars = maxChars - usedChars;
+                    const usedBytes = Math.ceil(usedChars / 2);
+                    
+                    optionsLimit.innerHTML = `<span class="info">
+                        IHL=${ihl} → Espacio para opciones: ${extraBytes} bytes (${maxChars} caracteres hex)
+                        <br>Usado: ${usedChars} caracteres (${usedBytes} bytes) | Restantes: ${remainingChars} caracteres
+                    </span>`;
+                }
+            } else {
+                // DESHABILITAR campo opciones si IHL = 5
+                optionsInput.disabled = true;
+                optionsInput.value = "";
+                optionsInput.placeholder = "IHL=5 no permite opciones";
+                optionsInput.classList.add('disabled');
+                
+                if (optionsLimit) {
+                    optionsLimit.innerHTML = `<span style="color:#757575">IHL=5 → No hay espacio para opciones</span>`;
+                }
+            }
+        }
+
+        function toggleTOSInput() {
+            const preset = document.getElementById("tos_preset");
+            const customDiv = document.getElementById("tos_custom");
+            
+            if (preset.value === "custom") {
+                customDiv.style.display = "block";
+            } else {
+                customDiv.style.display = "none";
+            }
+        }
+
+        function calculateTotalLength() {
+            const ihl = parseInt(document.getElementById("ihl").value);
+            const data = document.getElementById("data").value;
+            const headerBytes = ihl * 4;
+            const dataBytes = data.length;
+            const total = headerBytes + dataBytes;
+            
+            const totalLengthInfo = document.getElementById("total_length_info");
+            if (totalLengthInfo) {
+                totalLengthInfo.textContent = `Calculado automáticamente: ${total} bytes (Encabezado: ${headerBytes} + Datos: ${dataBytes})`;
+            }
+        }
+
+        // Inicializar todos los filtros
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar el evento de submit del formulario
+            document.getElementById('ipv4Form').addEventListener('submit', procesarFormulario);
+            
+            // Aplicar filtros iniciales con límites específicos
+            applyFilter('ident', 'hex');
+            applyFilter('flags', 'bin');
+            applyFilter('frag_offset', 'bin');
+            applyFilter('ttl', 'dec');
+            applyFilter('checksum', 'hex');
+            
+            // FILTRO ESPECÍFICO PARA OPCIONES
+            filterOptions();
+            
+            // Establecer límites iniciales
+            updateMaxLength('ident', 'hex', 16);
+            updateMaxLength('flags', 'bin', 3);
+            updateMaxLength('frag_offset', 'bin', 13);
+            updateMaxLength('ttl', 'dec', 8);
+            updateMaxLength('checksum', 'hex', 16);
+            
+            // Filtros para IP
+            filterIP('src_ip');
+            filterIP('dst_ip');
+            
+            // Configurar event listeners para cambio de base
+            document.getElementById('ident_base').addEventListener('change', function() {
+                changeBaseFilter('ident', 'ident_base', 16);
+            });
+            
+            document.getElementById('flags_base').addEventListener('change', function() {
+                changeBaseFilter('flags', 'flags_base', 3);
+            });
+            
+            document.getElementById('frag_offset_base').addEventListener('change', function() {
+                changeBaseFilter('frag_offset', 'frag_offset_base', 13);
+            });
+            
+            document.getElementById('ttl_base').addEventListener('change', function() {
+                changeBaseFilter('ttl', 'ttl_base', 8);
+            });
+            
+            document.getElementById('checksum_base').addEventListener('change', function() {
+                changeBaseFilter('checksum', 'checksum_base', 16);
+            });
+            
+            // Configurar TOS preset
+            document.getElementById('tos_preset').addEventListener('change', toggleTOSInput);
+            
+            // Inicializar opciones
+            updateOptionsLimit();
+            toggleTOSInput();
+            
+            // Calcular longitud total cuando cambien IHL o datos
+            document.getElementById('ihl').addEventListener('change', function() {
+                updateOptionsLimit();
+                calculateTotalLength();
+                // Forzar validación de opciones actuales
+                const optionsInput = document.getElementById('options');
+                let event = new Event('input');
+                optionsInput.dispatchEvent(event);
+            });
+            document.getElementById('data').addEventListener('input', calculateTotalLength);
+            
+            // Actualizar longitud de datos en tiempo real
+            document.getElementById('data').addEventListener('input', function() {
+                document.getElementById('data_length').textContent = this.value.length;
+                calculateTotalLength();
+            });
+            
+            // Aplicar restricciones en tiempo real para TTL y Opciones
+            applyTTLRestrictions();
+            applyOptionsRestrictions();
+            
+            // Inicializar cálculo de longitud total
+            calculateTotalLength();
+        });
+    </script>
+</body>
+</html>
